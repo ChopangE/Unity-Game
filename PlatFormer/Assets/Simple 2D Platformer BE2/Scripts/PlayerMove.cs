@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sprite;
     Animator anim;
+    public int jumpCount;
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -18,20 +19,26 @@ public class PlayerMove : MonoBehaviour
 
     void Update() {
 
-        if (Input.GetButtonDown("Jump")) {
+        
+        
+        if (Input.GetButtonDown("Jump") && jumpCount < 2) {
+            rb.velocity = Vector2.zero;
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            jumpCount++;
+        }
+        else if (Input.GetButtonUp("Jump") && rb.velocity.y > 0) {
+            rb.velocity = rb.velocity * 0.5f;
         }
 
-        if (Input.GetButtonUp("Horizontal")) {
+        if (Input.GetButtonUp("Horizontal") && jumpCount == 0) {
             rb.velocity = Vector2.zero;
-                //new Vector2(rb.velocity.normalized.x * 0.5f, rb.velocity.y);
         }
 
         
         if (Input.GetButton("Horizontal")) {
             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
         }
-        if(Mathf.Abs(rb.velocity.x) < 0.4f) {
+        if(Mathf.Abs(rb.velocity.x) < 0.3f) {
             anim.SetBool("Run", false);
         }
         else {
@@ -52,5 +59,17 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2 (-maxSpeed, rb.velocity.y);
         }
        
+    }
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        Debug.Log(collision.gameObject.tag);
+        
+        anim.SetBool("Jump", false);
+        jumpCount = 0;
+        rb.velocity = Vector2.zero;
+        
+    }
+    void OnCollisionExit2D(Collision2D collision) {
+        anim.SetBool("Jump", true);
     }
 }
