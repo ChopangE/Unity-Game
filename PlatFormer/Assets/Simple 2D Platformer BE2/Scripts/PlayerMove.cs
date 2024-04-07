@@ -61,17 +61,6 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2 (-maxSpeed, rb.velocity.y);
         }
         
-        //if (rb.velocity.y < 0) {
-        //    Debug.DrawRay(rb.position, Vector2.down, Color.red);
-        //    RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, 1, LayerMask.GetMask("Ground"));
-        //    if(hit.collider != null) {
-        //        if (hit.distance < 0.5f) {
-        //            anim.SetBool("Jump", false);
-        //            jumpCount = 0;
-        //        }
-                
-        //    }
-        //}
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -85,7 +74,7 @@ public class PlayerMove : MonoBehaviour
         }
         else {
             Debug.Log("Ceil");
-
+            rb.velocity = Vector2.zero;
         }
 
     }
