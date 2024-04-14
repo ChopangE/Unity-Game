@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour
     void Update() {
 
         
-        
+
         if (Input.GetButtonDown("Jump") && jumpCount < 2) {
             rb.velocity = Vector2.zero;
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
