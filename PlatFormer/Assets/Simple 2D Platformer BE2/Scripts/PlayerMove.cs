@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -10,15 +12,16 @@ public class PlayerMove : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sprite;
     Animator anim;
+    Collider2D coll;
     public int jumpCount;
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
     }
 
     void Update() {
-
         
 
         if (Input.GetButtonDown("Jump") && jumpCount < 2) {
@@ -61,6 +64,33 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2 (-maxSpeed, rb.velocity.y);
         }
         
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.tag != "Ground") return;
+        if(Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Z))
+        {
+            jumpCount = 2;
+            coll.isTrigger = true;
+        }    
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("Ground"))
+        {
+            
+            coll.isTrigger = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("DeadZone"))
+        {
+            transform.position = new Vector3(0, 1, 0);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision) {

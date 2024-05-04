@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMove : MonoBehaviour
 {
 
-    int nextMove;
+    int nextMove = 0;
     Rigidbody2D rb;
     SpriteRenderer sprite;
     void Awake() {
@@ -27,7 +27,7 @@ public class EnemyMove : MonoBehaviour
         }
 
     }
-
+    
     void Think() {
         nextMove = Random.Range(-1, 2);
         sprite.flipX = nextMove >= 0 ? true : false;
