@@ -8,7 +8,6 @@ public class Doors : MonoBehaviour
 
     public Transform connectDoor;
 
-
     private void OnTriggerStay2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
